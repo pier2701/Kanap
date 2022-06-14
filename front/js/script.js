@@ -1,46 +1,43 @@
-/**intégration de l'API dans une constante */
-let URLProducts = 'http://localhost:3000/api/products';
-/**récuperation de l'API */
-fetch(URLProducts)
-    .then(function (response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.log('Erreur : ' + response.status + ' page introuvable');
-        }
+/**mise en place de la requête vers l'API avec une réponse console */
+fetch('http://localhost:3000/api/products/')
+    .then(function (res) {
+        if (res.ok) {
+            return res.json();
+        } else { console.log('Erreur serveur : ' + res.status + ' serveur introuvable'); }
     })
-    /**création des balises html,selon l'exemple donné, et association par "mot-clé/products" aux balises */
-    /**utilisation de la boucle forEach sur l'ensemble "products" */
-    .then(function (syncDisplay) {
-        syncDisplay.forEach(products => {
-            let items = document.getElementById('items');
-            a = document.createElement("a");
-            a.ref = "./product.html" + "?id=" + products._id;
-            items.appendChild(a);
+    /**création des balises html,selon l'exemple donné, 
+     * et association par "mot-clé/products" aux balises */
+    /**utilisation de la boucle forEach sur l'ensemble "products**/
+    .then(function (displayKanap) {
+        displayKanap.forEach(products => {
+            let kanaps = document.getElementById('items');
+            let kanapLink = document.createElement("a");
 
-            let article = document.createElement("article");
-            a.appendChild(article);
+            kanaps.appendChild(kanapLink);
+            /**lien href vers la page produit grâce à _id*/
+            kanapLink.href = `product.html?id=${products._id}`;
+            let kanapBlock = document.createElement("article");
+            kanapLink.appendChild(kanapBlock);
 
-            let img = document.createElement("img");
-            img.src = products.imageUrl;
-            img.alt = products.altTxt;
-            article.appendChild(img);
+            let imageProduct = document.createElement("img");
+            imageProduct.src = products.imageUrl;
+            imageProduct.alt = products.altTxt;
+            kanapBlock.appendChild(imageProduct);
 
-            let h3 = document.createElement("h3");
-            h3.classList.add("productName");
-            h3.innerHTML = products.name;
-            article.appendChild(h3);
+            let titleProduct = document.createElement("h3");
+            titleProduct.classList.add("productName");
+            titleProduct.innerHTML = products.name;
+            kanapBlock.appendChild(titleProduct);
 
-            let p = document.createElement("p");
-            p.classList.add("productDescription");
-            p.innerHTML = products.description;
-            article.appendChild(p);
-
-            let span = document.createElement("span");
-            span.classList.add("price");
-            span.innerHTML = products.price + " €";
-            span.style.paddingBottom = "10px";
-            article.appendChild(span);
+            let descriptionProduct = document.createElement("p");
+            descriptionProduct.classList.add("productDescription");
+            descriptionProduct.innerHTML = products.description;
+            kanapBlock.appendChild(descriptionProduct);
+            /**rajout de l'élément "prix" et de sa mise en page*/
+            let priceProduct = document.createElement("span");
+            priceProduct.classList.add("price");
+            priceProduct.innerHTML = products.price + " €";
+            priceProduct.style.paddingBottom = "10px";
+            kanapBlock.appendChild(priceProduct);
         });
     });
-
