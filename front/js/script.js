@@ -7,7 +7,7 @@ fetch('http://localhost:3000/api/products/')
     })
     /**création des balises html,selon l'exemple donné, 
      * et association par "mot-clé/products" aux balises */
-    /**utilisation de la boucle forEach sur l'ensemble "products**/
+    /**utilisation de la boucle forEach sur l'ensemble "products" de l'API**/
     .then(function (displayKanap) {
         displayKanap.forEach(products => {
             let kanaps = document.getElementById('items');
