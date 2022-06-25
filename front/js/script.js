@@ -12,8 +12,8 @@ fetch('http://localhost:3000/api/products/')
         displayKanap.forEach(products => {
             let kanaps = document.getElementById('items');
             let kanapLink = document.createElement("a");
-
             kanaps.appendChild(kanapLink);
+
             /**lien href vers la page produit grâce à _id*/
             kanapLink.href = `product.html?id=${products._id}`;
             let kanapBlock = document.createElement("article");

@@ -2,6 +2,7 @@
 class choiceKanap {
     constructor() {
         this.id = idKanap;
+        this.name = kanap.name;
         this.color = colors.value;
         this.quantity = quantity.value;
     }
@@ -10,22 +11,25 @@ class choiceKanap {
 //création et préparation du futur tableau
 let arrayOfkanaps = JSON.parse(localStorage.getItem("panierkanap"));
 console.log(arrayOfkanaps);
+
 //récupération de la sélection au click
 const addToCart = document.querySelector("#addToCart").addEventListener("click", async function (event) {
     event.preventDefault();
 
     // fonction pour finaliser la commande ou revenir aux choix de canapés
     const allerAuPanier = () => {
-        if (window.confirm('Votre produit a bien été ajouté, cliquez sur "OK" pour finaliser votre commade ou "ANNULER" pour continuer vos achats.')) {
-            //redirection vers la page "cart.html
+        if (window.confirm('Votre produit a bien été ajouté, cliquez sur "OK" pour finaliser votre commade ou "Annuler" pour continuer vos achats.')) {
+            //redirection vers la page "panier"
             window.location.href = "cart.html";
         } else {
+            //redirection vers la page "index" pour ajouter un autre choix
             window.location.href = "index.html";
         };
     };
     //utilisation de la class sous forme de variable pour récupération des données au click 
     let newchoiceKanap = new choiceKanap;
-    // conditions de sélection pour passer commandes
+
+    // conditions de sélection par contraintes pour passer la commande
     if (newchoiceKanap.quantity == 0) {
         alert("Veuillez sélectionner une quantité");
     } else if (newchoiceKanap.color == "") {
@@ -51,6 +55,7 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
             localStorage.setItem("panierkanap", JSON.stringify(arrayOfkanaps));
             console.log("localStorage pas vide " + arrayOfkanaps.length + " model de kanap");
             allerAuPanier();
+            console.log(idKanap.name);
         }
 
         // si le panier est vide
