@@ -5,6 +5,8 @@ class choiceKanap {
         this.name = kanap.name;
         this.color = colors.value;
         this.quantity = quantity.value;
+        this.altTxt = kanap.altTxt;
+        this.imageUrl = kanap.imageUrl;
     }
 };
 

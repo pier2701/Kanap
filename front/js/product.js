@@ -5,7 +5,7 @@ console.log(searchAndGetKanap);
 let idKanap = searchAndGetKanap.searchParams.get("id");
 
 /**constante qui correspond à l'url de l'API de tous les canapés**/
-const URLKANAPS = "http://localhost:3000/api/Products/";
+const URLKANAPS = "http://localhost:3000/api/products/";
 
 /**fonction pour récupérer l'url + l'id spécifique qui attendra 
  * d'abord le retour du "fetch(URLKANAPS + idKanap) = API du canapé récupéré" */
