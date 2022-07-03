@@ -11,8 +11,7 @@ class choiceKanap {
 };
 
 //création et préparation du futur tableau
-let arrayOfkanaps = JSON.parse(localStorage.getItem("panierkanap"));
-console.log(arrayOfkanaps);
+let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
 
 //récupération de la sélection au click
 const addToCart = document.querySelector("#addToCart").addEventListener("click", async function (event) {
@@ -39,9 +38,9 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
     }
     else {
         //si le panier n'est pas vide et qu'il est inférieur ou égal à 100
-        if (arrayOfkanaps != null && arrayOfkanaps.length <= 100) {
+        if (arrayOfKanaps != null && arrayOfKanaps.length <= 100) {
             //création d'une constante pour regrouper les canapés avec le même id et couleur
-            const comparekanap = arrayOfkanaps.find(
+            const comparekanap = arrayOfKanaps.find(
                 (kanap) => kanap.idKanap === newchoiceKanap.idKanap
                     &&
                     kanap.color === newchoiceKanap.color
@@ -50,12 +49,13 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
             if (comparekanap) {
                 let sumQuantities = parseInt(comparekanap.quantity) + parseInt(newchoiceKanap.quantity);
                 comparekanap.quantity = sumQuantities;
-                console.log(sumQuantities);
-            } else {   // sinon, ajout du canapé sous forme d'objet dans le tableau
-                arrayOfkanaps.push(newchoiceKanap);
+                console.log('quantité du même kanap additionner : ' + sumQuantities);
+                // sinon, ajout du canapé sous forme d'objet dans le tableau
+            } else {
+                arrayOfKanaps.push(newchoiceKanap);
             };
-            localStorage.setItem("panierkanap", JSON.stringify(arrayOfkanaps));
-            console.log("localStorage pas vide " + arrayOfkanaps.length + " model de kanap");
+            localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
+            console.log("localStorage pas vide " + arrayOfKanaps.length + " model de kanap");
             allerAuPanier();
             console.log(idKanap.name);
         }
@@ -63,17 +63,17 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         // si le panier est vide
         else {
             // création du tableau pour recevoir les objets
-            arrayOfkanaps = [];
+            arrayOfKanaps = [];
             // ajout du canapé sous forme d'objet dans le tableau
-            arrayOfkanaps.push(newchoiceKanap);
+            arrayOfKanaps.push(newchoiceKanap);
             //création du localStorage et ajout du tableau stringifié
-            localStorage.setItem("panierkanap", JSON.stringify(arrayOfkanaps));
-            console.log("premier choix: " + arrayOfkanaps[0].quantity);
+            localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
+            console.log("premier choix: " + arrayOfKanaps[0].quantity);
             allerAuPanier();
         }
         //recupération final du tableau sous forme d'objet 
-        arrayOfkanaps = JSON.parse(localStorage.getItem("panierkanap"));
+        arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
         console.log(newchoiceKanap);
     }
 });
-console.table(arrayOfkanaps);
+console.table(arrayOfKanaps);

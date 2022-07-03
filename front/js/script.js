@@ -1,20 +1,20 @@
-/**mise en place de la requête vers l'API avec une réponse console */
+// mise en place de la requête vers l'API avec une réponse console
 fetch('http://localhost:3000/api/products/')
     .then(function (res) {
         if (res.ok) {
             return res.json();
         } else { console.log('Erreur serveur : ' + res.status + ' serveur introuvable'); }
     })
-    /**création des balises html,selon l'exemple donné, 
-     * et association par "mot-clé/products" aux balises */
-    /**utilisation de la boucle forEach sur l'ensemble "products" de l'API**/
+    // création des balises html,selon l'exemple donné
+    // association par "mot-clé/products" aux balises
+    // utilisation de la boucle forEach sur l'ensemble "products" de l'API
     .then(function (displayKanap) {
         displayKanap.forEach(products => {
             let kanaps = document.getElementById('items');
             let kanapLink = document.createElement("a");
             kanaps.appendChild(kanapLink);
 
-            /**lien href vers la page produit grâce à _id*/
+            // lien href vers la page produit grâce à _id
             kanapLink.href = `product.html?id=${products._id}`;
             let kanapBlock = document.createElement("article");
             kanapLink.appendChild(kanapBlock);
@@ -33,7 +33,8 @@ fetch('http://localhost:3000/api/products/')
             descriptionProduct.classList.add("productDescription");
             descriptionProduct.innerHTML = products.description;
             kanapBlock.appendChild(descriptionProduct);
-            /**rajout de l'élément "prix" et de sa mise en page*/
+
+            // rajout de l'élément "prix" et de sa mise en page
             let priceProduct = document.createElement("span");
             priceProduct.classList.add("price");
             priceProduct.innerHTML = products.price + " €";
