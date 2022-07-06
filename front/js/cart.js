@@ -1,9 +1,29 @@
-//déclaration du tableau contenant les données de la commande
+//déclaration du tableau contenant les données de la choix
 let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
 console.table(arrayOfKanaps);
 
+//déclaration du tableau contenant les prix de chaque choix
+let arrayOfPrice = new Array();
+
 //function d'intégration des infos du tableau vers le html
 for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
+
+    // création de la class kanap
+    class choiceKanap {
+        constructor() {
+            this.id = idKanap;
+            this.name = idName;
+            this.color = idColor;
+            this.quantity = idQuantity;
+            this.altTxt = idAltTxt;
+            this.imageUrl = idImage;
+        }
+    };
+
+    //déclaration d'une variable pour identifier chaque kanap
+    let idKanap = arrayOfKanaps[kanap].id;
+    console.log('Id du Kanap : ' + idKanap);
+
     // création des balises html et de leur attribut
     const sectionKanap = document.getElementById("cart__items");
     const articleKanap = document.createElement("article");
@@ -11,11 +31,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     articleKanap.setAttribute("data-color", arrayOfKanaps[kanap].color);
     articleKanap.classList.add("cart__item");
     sectionKanap.appendChild(articleKanap);
-
-    //déclaration d'une variable pour identifier chaque kanap
-    let idKanap = arrayOfKanaps[kanap].id;
-    console.log('Id du Kanap : ' + idKanap);
-
     const divImageKanap = document.createElement("div");
     divImageKanap.classList.add("cart__item__img");
     articleKanap.appendChild(divImageKanap);
@@ -44,7 +59,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     colorKanap.innerHTML = arrayOfKanaps[kanap].color;
     contentDetailsKanap.appendChild(colorKanap);
     let idColor = arrayOfKanaps[kanap].color;
-    console.log('choix couleur : ' + idColor);
 
     const priceKanap = document.createElement("p");
     contentDetailsKanap.appendChild(priceKanap);
@@ -69,17 +83,13 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     inputNumberKanap.setAttribute("max", "100");
     inputNumberKanap.setAttribute("name", "itemQuantity");
     adjustQuantityKanap.appendChild(inputNumberKanap);
-    console.log('quantité affichée : ' + inputNumberKanap.value);
-    console.log('quantité choisie : ' + arrayOfKanaps[kanap].quantity);
     let idQuantity = arrayOfKanaps[kanap].quantity;
     idQuantity = inputNumberKanap.value;
 
-    // gestion de la modification de la quantité dans " input "
-    inputNumberKanap.addEventListener('change', function (e) {
+    //---------------gestion de la modification de la quantité dans " input "--------------//
+    inputNumberKanap.addEventListener('input', function (e) {
         idQuantity = e.target.value;
         let newChoiceKanap = new choiceKanap;
-        console.log(newChoiceKanap);
-        console.table(arrayOfKanaps);
 
         //création d'une constante pour regrouper les canapés avec le même id et couleur
         const comparekanap = arrayOfKanaps.find(
@@ -87,29 +97,33 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
                 &&
                 kanap.color === newChoiceKanap.color
         );
-        console.log(newChoiceKanap.quantity);
 
         //création de la fonction pour remplacer et mettre à jour les objets du tableau 
         exchangeQuantity = () => {
             arrayOfKanaps = arrayOfKanaps.filter(
                 // fonction inversé avec les 2 conditions pour supprimer l'ancien kanap
                 (element) => !(element.id === idKanap && element.color === idColor));
-            console.log(idQuantity);
+
             // mise à jour dynamique du prix
-            calculatePrice(idKanap, priceKanap, inputNumberKanap);
+            calculatePrice();
+
             //mise à jour du tableau avec le nouveau kanap
             arrayOfKanaps.push(newChoiceKanap);
+
             // mise à jour du localStorage
             localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
             console.log("kanaps identiques");
-            console.log(idQuantity);
-            console.log(newChoiceKanap);
+
+            // rechargement de la page et mise à jour du DOM en fonction du localStorage
+            location.reload();
+            alert("La quantité et le prix de votre produit vont être  modifiées")
         };
 
         //mise en place de l'opérateur ternaire puis de la fonction pour modification
         comparekanap ? exchangeQuantity() : console.log("kanaps différents");
+        console.table(arrayOfKanaps);
     });
-    // fin de modification des quantités 
+    //---------------------fin de modification des quantités--------------------------------//
 
 
     const removeKanap = document.createElement("div");
@@ -124,12 +138,12 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
     // calcul de la quantité total avec la méthode "reduce"
     let totalQuantity = document.querySelector("#totalQuantity");
-    totalQuantity.innerHTML = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity) }, 0);
+    sumQuantity(totalQuantity);
 
-    //  gestion de la suppression d'un kanap
+
+    //------------------------gestion de la suppression d'un kanap-------------------//
     deleteKanap.addEventListener("click", (event) => {
         event.preventDefault();
-        alert("Votre produit a été supprimé")
 
         // filtre et garde ce qui est différent du click
         arrayOfKanaps = arrayOfKanaps.filter(
@@ -141,39 +155,61 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
         // rechargement de la page et mise à jour du DOM en fonction du localStorage
         location.reload();
+        alert("Votre produit a été supprimé")
 
         //si le localStorage est vide, il est supprimé puis retour à la page d'accueil
         if (arrayOfKanaps.length === 0) {
             localStorage.clear();
             document.location.href = "index.html";
         }
-    }); // fin de la gestion de suppression
+    });
+    console.table(arrayOfKanaps);
+    // ----------------------------fin de la gestion de suppression-----------------------//
 
-    //function de calcul du prix fetché, multiplié par la quantité de kanaps par model
-    function calculatePrice(idKanap, priceKanap, _inputNumberKanap) {
+
+    //fonction pour le calcul du prix fetché
+    calculatePrice = () => {
         fetch('http://localhost:3000/api/products/' + idKanap)
             .then((resp) => resp.json())
-            .then(function (getData) {
-                priceKanap.innerHTML = "Prix total : " + `${getData.price}` * idQuantity + "  €";
-                console.log(getData.price);
+            .then(function (kanaps) {
+                priceKanap.innerHTML = "Prix total : " + kanaps.price * idQuantity + "  €";
             })
             .catch(function (error) {
-                console.log('Erreur : serveur introuvable ' + error);
-            });
-    }
-
-    // création de la class kanap
-    class choiceKanap {
-        constructor() {
-            this.id = idKanap;
-            this.name = idName;
-            this.color = idColor;
-            this.quantity = idQuantity;
-            this.altTxt = idAltTxt;
-            this.imageUrl = idImage;
-        }
+                console.log('Erreur = ' + error);
+            })
     };
 
-    calculatePrice(idKanap, priceKanap, inputNumberKanap);
-};
-console.table(arrayOfKanaps);
+    //fonction pour  calculer et intégrater le prix total du panier
+    calculateTotalPrice = () => {
+        fetch('http://localhost:3000/api/products/' + idKanap)
+            .then((resp) => resp.json())
+            .then(function (kanaps) {
+                let totalPriceKanap = kanaps.price * idQuantity;
+                console.log(totalPriceKanap);
+                arrayOfPrice.push(totalPriceKanap);
+                let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
+                let totalPrice = document.getElementById('totalPrice');
+                totalPrice.innerHTML = sumOfPrice;
+                console.log(arrayOfPrice);
+                console.log(sumOfPrice);
+            })
+            .catch(function (error) {
+                console.log('Erreur = ' + error);
+            })
+    };
+
+    //fonction pour le calcul total des quantités avec la méthode "reduce"
+    function sumQuantity(totalQuantity) {
+        let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
+        totalQuantity.innerHTML = resultQuantity;
+    };
+
+    //prix global du panier
+    calculateTotalPrice();
+
+    //prix calculé en arrivant sur la page
+    calculatePrice();
+}
+
+//----------------------------gestion du formulaire-----------------------------//
+

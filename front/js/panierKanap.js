@@ -41,9 +41,8 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         if (arrayOfKanaps != null && arrayOfKanaps.length <= 100) {
             //création d'une constante pour regrouper les canapés avec le même id et couleur
             const comparekanap = arrayOfKanaps.find(
-                (kanap) => kanap.idKanap === newchoiceKanap.idKanap
-                    &&
-                    kanap.color === newchoiceKanap.color
+                kanap => kanap.id === newchoiceKanap.id
+                    && kanap.color === newchoiceKanap.color
             );
             //si la comparaison est vrai, on additionne les quantités
             if (comparekanap) {
