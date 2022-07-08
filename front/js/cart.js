@@ -162,8 +162,8 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
             localStorage.clear();
             document.location.href = "index.html";
         }
+
     });
-    console.table(arrayOfKanaps);
     // ----------------------------fin de la gestion de suppression-----------------------//
 
 
@@ -185,13 +185,10 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
             .then((resp) => resp.json())
             .then(function (kanaps) {
                 let totalPriceKanap = kanaps.price * idQuantity;
-                console.log(totalPriceKanap);
                 arrayOfPrice.push(totalPriceKanap);
                 let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
                 let totalPrice = document.getElementById('totalPrice');
                 totalPrice.innerHTML = sumOfPrice;
-                console.log(arrayOfPrice);
-                console.log(sumOfPrice);
             })
             .catch(function (error) {
                 console.log('Erreur = ' + error);
@@ -210,6 +207,151 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     //prix calculé en arrivant sur la page
     calculatePrice();
 }
+console.table(arrayOfKanaps)
+
 
 //----------------------------gestion du formulaire-----------------------------//
 
+// création de l'objet contenant les informations du formulaire
+let detailsContact = {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    email: ""
+}
+
+// création d'un objet contenant la commande "kanap" et l'objet "contact"
+let command = new Array();
+
+// déclaration des "regex" pour les soumettre aux différents opérateurs ternaires
+let textRegex = /^[a-zA-Z]$/;
+
+//recupération de l'information du formulaire grâce à l'Id
+let firstName = document.querySelector('#firstName');
+let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
+
+
+// récupération et traitement de l'input par l'opérateur ternaire
+firstName.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.target.value == undefined ? firstNameErrorMsg.innerHTML = "Veuillez renseigner votre Prénom" : e.target.value;
+    let firstNameContact = e.target.value;
+    // intégration de l'information dans l'objet "contact"
+    detailsContact.firstName = firstNameContact;
+    console.log(detailsContact);
+});
+
+//recupération de l'information du formulaire grâce à l'Id
+let lastName = document.querySelector('#lastName');
+let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
+
+// récupération et traitement de l'input par l'opérateur ternaire
+lastName.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.target.value == undefined ? lastNameErrorMsg.innerHTML = "Veuillez renseigner votre Nom" : e.target.value;
+    let lastNameContact = e.target.value;
+    // intégration de l'information dans l'objet "contact"
+    detailsContact.lastName = lastNameContact;
+    console.log(detailsContact);
+});
+
+//recupération de l'information du formulaire grâce à l'Id
+let address = document.querySelector('#address');
+let addressErrorMsg = document.querySelector('#addressErrorMsg');
+
+// récupération et traitement de l'input par l'opérateur ternaire
+address.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.target.value == undefined ? addressErrorMsg.innerHTML = "Veuillez renseigner votre Adresse" : e.target.value;
+    let addressContact = e.target.value;
+    // intégration de l'information dans l'objet "contact"
+    detailsContact.address = addressContact;
+    console.log(detailsContact);
+});
+
+//recupération de l'information du formulaire grâce à l'Id
+let city = document.querySelector('#city');
+let cityErrorMsg = document.querySelector('#cityErrorMsg');
+
+// récupération et traitement de l'input par l'opérateur ternaire
+city.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.target.value == undefined ? cityErrorMsg.innerHTML = "Veuillez renseigner votre Ville" : e.target.value;
+    let cityContact = e.target.value;
+    // intégration de l'information dans l'objet "contact"
+    detailsContact.city = cityContact;
+    console.log(detailsContact);
+});
+
+//recupération de l'information du formulaire grâce à l'Id
+let email = document.querySelector('#email');
+let emailErrorMsg = document.querySelector('#emailErrorMsg');
+
+// récupération et traitement de l'input par l'opérateur ternaire
+email.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.target.value == undefined ? addressErrorMsg.innerHTML = "Veuillez renseigner votre Email" : e.target.value;
+    let emailContact = e.target.value;
+    // intégration de l'information dans l'objet "contact"
+    detailsContact.email = emailContact;
+    console.log(detailsContact);
+    //console.log(detailsContact.firstName);
+    //création de l'objet contact dans le LocalStorage
+    localStorage.setItem("objetContact", JSON.stringify(detailsContact));
+    //let newContact = JSON.parse(localStorage.getItem("objetContact"));
+});
+
+// récuperation de l'objet contact 
+let newContact = JSON.parse(localStorage.getItem("objetContact"));
+console.log(newContact);
+
+//intégration du contact dans le DOM
+if (newContact == null) {
+    console.log("No objetContact found");
+} else {
+    document.querySelector("#firstName").value = newContact.firstName;
+    document.querySelector("#lastName").value = newContact.lastName;
+    document.querySelector("#address").value = newContact.address;
+    document.querySelector("#city").value = newContact.city;
+    document.querySelector("#email").value = newContact.email;
+    console.log(newContact);
+}
+
+
+let order = document.querySelector('#order');
+console.log(order);
+
+
+/** PUSH de la commande et de l'objet contact dans le même Array
+
+if (/^[a-zA-Z]$/.test(newContact.firstName)) {
+    console.log("ok");
+} else {
+    console.log("error");
+};
+
+
+command.push(detailsContact);
+console.log(command);
+
+let newDetailsContact = JSON.parse(localStorage.getItem("objetContact"));
+    console.log(newDetailsContact);
+
+
+
+    // création de la class contact
+    class contact {
+        constructor() {
+            this.firstNameContact = firstName;
+            this.lastNameContact = lastName;
+            this.addressContact = address;
+            this.cityContact = city;
+            this.emailContact = email;
+        }
+    };
+    let newContact = new contact;
+    console.log(newContact)
+*/
+
+// regex pour l'email ('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-z]{2,10}$')
