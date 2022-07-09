@@ -1,10 +1,18 @@
 //déclaration du tableau contenant les données de la choix
 let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
-console.table(arrayOfKanaps);
+
+// signaler un panier vide et redirection vers l'accueil
+backToMenu = () => {
+    window.location.href = "index.html";
+    alert("Vous n'avez pas de commande en cours, vous allez être rediriger vers la page d'acceuil")
+};
+arrayOfKanaps == null ? backToMenu() : console.table(arrayOfKanaps);
 
 //déclaration du tableau contenant les prix de chaque choix
 let arrayOfPrice = new Array();
 
+//--------------- function d'intégration des kanaps vers le DOM ---------//
+console.table(arrayOfKanaps)
 //function d'intégration des infos du tableau vers le html
 for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
@@ -116,7 +124,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
             // rechargement de la page et mise à jour du DOM en fonction du localStorage
             location.reload();
-            alert("La quantité et le prix de votre produit vont être  modifiées")
+            alert("La quantité et le prix de votre produit vont être  modifiées");
         };
 
         //mise en place de l'opérateur ternaire puis de la fonction pour modification
@@ -124,8 +132,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         console.table(arrayOfKanaps);
     });
     //---------------------fin de modification des quantités--------------------------------//
-
-
     const removeKanap = document.createElement("div");
     removeKanap.classList.add("cart__item__content__settings__delete");
     removeKanap.style.paddingTop = "12px";
@@ -155,7 +161,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
         // rechargement de la page et mise à jour du DOM en fonction du localStorage
         location.reload();
-        alert("Votre produit a été supprimé")
+        alert("Votre produit a été supprimé");
 
         //si le localStorage est vide, il est supprimé puis retour à la page d'accueil
         if (arrayOfKanaps.length === 0) {
@@ -165,8 +171,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
     });
     // ----------------------------fin de la gestion de suppression-----------------------//
-
-
     //fonction pour le calcul du prix fetché
     calculatePrice = () => {
         fetch('http://localhost:3000/api/products/' + idKanap)
@@ -176,7 +180,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
             })
             .catch(function (error) {
                 console.log('Erreur = ' + error);
-            })
+            });
     };
 
     //fonction pour  calculer et intégrater le prix total du panier
@@ -192,7 +196,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
             })
             .catch(function (error) {
                 console.log('Erreur = ' + error);
-            })
+            });
     };
 
     //fonction pour le calcul total des quantités avec la méthode "reduce"
@@ -207,11 +211,11 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     //prix calculé en arrivant sur la page
     calculatePrice();
 }
-console.table(arrayOfKanaps)
+
+//---------------- fin d'intégration des kanaps vers le DOM ------------//
 
 
-//----------------------------gestion du formulaire-----------------------------//
-
+//---------------------------- gestion du formulaire -----------------------------//
 // création de l'objet contenant les informations du formulaire
 let detailsContact = {
     firstName: "",
@@ -221,27 +225,36 @@ let detailsContact = {
     email: ""
 }
 
-// création d'un objet contenant la commande "kanap" et l'objet "contact"
-let command = new Array();
+// création de l'objet contenant les informations à fixer dans le DOM
+let contact = {};
 
-// déclaration des "regex" pour les soumettre aux différents opérateurs ternaires
-let textRegex = /^[a-zA-Z]$/;
+// déclaration de la validation par regex pour le Nom, le Prénom et la Ville
+const newTextRegex = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z\s-]{1,31}$/);
 
+
+//----- gestion du Prénom-----//
 //recupération de l'information du formulaire grâce à l'Id
 let firstName = document.querySelector('#firstName');
 let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
 
-
 // récupération et traitement de l'input par l'opérateur ternaire
 firstName.addEventListener("input", function (e) {
     e.preventDefault();
-    e.target.value == undefined ? firstNameErrorMsg.innerHTML = "Veuillez renseigner votre Prénom" : e.target.value;
+
+    // test du champ de formulaire par regex
     let firstNameContact = e.target.value;
-    // intégration de l'information dans l'objet "contact"
-    detailsContact.firstName = firstNameContact;
-    console.log(detailsContact);
+    const regexFirstName = newTextRegex;
+    let testFirstName = regexFirstName.test(firstNameContact);
+    console.log(testFirstName);
+
+    // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
+    (testFirstName == true) ? detailsContact.firstName = firstNameContact : firstNameErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Prénom";
+    console.log(firstNameContact);
+    // condition pour retirer le message d'erreur
+    (testFirstName == true) ? firstNameErrorMsg.innerHTML = "" : console.log("erreur formulaire");
 });
 
+//-------gestion du Nom---------//
 //recupération de l'information du formulaire grâce à l'Id
 let lastName = document.querySelector('#lastName');
 let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
@@ -249,13 +262,21 @@ let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
 // récupération et traitement de l'input par l'opérateur ternaire
 lastName.addEventListener("input", function (e) {
     e.preventDefault();
-    e.target.value == undefined ? lastNameErrorMsg.innerHTML = "Veuillez renseigner votre Nom" : e.target.value;
+
+    // test du champ de formulaire par regex
     let lastNameContact = e.target.value;
-    // intégration de l'information dans l'objet "contact"
-    detailsContact.lastName = lastNameContact;
-    console.log(detailsContact);
+    const regexLastName = newTextRegex;
+    let testLastName = regexLastName.test(lastNameContact);
+    console.log(testLastName);
+
+    // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
+    (testLastName == true) ? detailsContact.lastName = lastNameContact : lastNameErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Nom";
+    console.log(lastNameContact);
+    // condition pour retirer le message d'erreur
+    (testLastName == true) ? lastNameErrorMsg.innerHTML = "" : console.log("erreur formulaire");
 });
 
+//---------gestion de l'Adresse-------//
 //recupération de l'information du formulaire grâce à l'Id
 let address = document.querySelector('#address');
 let addressErrorMsg = document.querySelector('#addressErrorMsg');
@@ -263,13 +284,23 @@ let addressErrorMsg = document.querySelector('#addressErrorMsg');
 // récupération et traitement de l'input par l'opérateur ternaire
 address.addEventListener("input", function (e) {
     e.preventDefault();
-    e.target.value == undefined ? addressErrorMsg.innerHTML = "Veuillez renseigner votre Adresse" : e.target.value;
+
+    // test du champ de formulaire par regex
     let addressContact = e.target.value;
-    // intégration de l'information dans l'objet "contact"
-    detailsContact.address = addressContact;
-    console.log(detailsContact);
+
+    // déclaration de la validation par regex pour l'Email
+    const regexAddress = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z0-9\s,.'-]{3,}$/);
+    let testAddress = regexAddress.test(addressContact);
+    console.log(testAddress);
+
+    // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
+    (testAddress == true) ? detailsContact.address = addressContact : addressErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Adresse";
+    console.log(addressContact);
+    // condition pour retirer le message d'erreur
+    (testAddress == true) ? addressErrorMsg.innerHTML = "" : console.log("erreur formulaire");
 });
 
+//--------gestion de la Ville----------//
 //recupération de l'information du formulaire grâce à l'Id
 let city = document.querySelector('#city');
 let cityErrorMsg = document.querySelector('#cityErrorMsg');
@@ -277,13 +308,21 @@ let cityErrorMsg = document.querySelector('#cityErrorMsg');
 // récupération et traitement de l'input par l'opérateur ternaire
 city.addEventListener("input", function (e) {
     e.preventDefault();
-    e.target.value == undefined ? cityErrorMsg.innerHTML = "Veuillez renseigner votre Ville" : e.target.value;
+
+    // test du champ de formulaire par regex
     let cityContact = e.target.value;
-    // intégration de l'information dans l'objet "contact"
-    detailsContact.city = cityContact;
-    console.log(detailsContact);
+    const regexCity = newTextRegex;
+    let testCity = regexCity.test(cityContact);
+    console.log(testCity);
+
+    // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
+    (testCity == true) ? detailsContact.city = cityContact : cityErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Ville";
+    console.log(cityContact);
+    // condition pour retirer le message d'erreur
+    (testCity == true) ? cityErrorMsg.innerHTML = "" : console.log("erreur formulaire");
 });
 
+//--------gestion de l'Email----------//
 //recupération de l'information du formulaire grâce à l'Id
 let email = document.querySelector('#email');
 let emailErrorMsg = document.querySelector('#emailErrorMsg');
@@ -291,67 +330,71 @@ let emailErrorMsg = document.querySelector('#emailErrorMsg');
 // récupération et traitement de l'input par l'opérateur ternaire
 email.addEventListener("input", function (e) {
     e.preventDefault();
-    e.target.value == undefined ? addressErrorMsg.innerHTML = "Veuillez renseigner votre Email" : e.target.value;
+
+    // test du champ de formulaire par regex
     let emailContact = e.target.value;
-    // intégration de l'information dans l'objet "contact"
-    detailsContact.email = emailContact;
-    console.log(detailsContact);
-    //console.log(detailsContact.firstName);
+
+    // déclaration de la validation par regex pour l'Email
+    const regexEmail = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/);
+    let testEmail = regexEmail.test(emailContact);
+    console.log(testEmail);
+
+    // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
+    (testEmail == true) ? detailsContact.email = emailContact : emailErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Email";
+    console.log(emailContact);
+    // condition pour retirer le message d'erreur
+    (testEmail == true) ? emailErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+
     //création de l'objet contact dans le LocalStorage
     localStorage.setItem("objetContact", JSON.stringify(detailsContact));
-    //let newContact = JSON.parse(localStorage.getItem("objetContact"));
+    //setUpDom();
 });
 
+
 // récuperation de l'objet contact 
-let newContact = JSON.parse(localStorage.getItem("objetContact"));
-console.log(newContact);
+contact = JSON.parse(localStorage.getItem("objetContact"));
+console.log(contact);
 
-//intégration du contact dans le DOM
-if (newContact == null) {
-    console.log("No objetContact found");
-} else {
-    document.querySelector("#firstName").value = newContact.firstName;
-    document.querySelector("#lastName").value = newContact.lastName;
-    document.querySelector("#address").value = newContact.address;
-    document.querySelector("#city").value = newContact.city;
-    document.querySelector("#email").value = newContact.email;
-    console.log(newContact);
-}
-
-
-let order = document.querySelector('#order');
-console.log(order);
-
-
-/** PUSH de la commande et de l'objet contact dans le même Array
-
-if (/^[a-zA-Z]$/.test(newContact.firstName)) {
-    console.log("ok");
-} else {
-    console.log("error");
+//sauvegarde des informations du contact dans le DOM
+setUpDom = () => {
+    document.querySelector("#firstName").value = contact.firstName;
+    document.querySelector("#lastName").value = contact.lastName;
+    document.querySelector("#address").value = contact.address;
+    document.querySelector("#city").value = contact.city;
+    document.querySelector("#email").value = contact.email;
+    console.log(contact);
 };
 
+//récupération "id" de chaque kanap dans un array "products"
+let products = new Array();
+arrayOfKanaps.forEach(product => {
+    products.push(product.id);
+    console.log(products);
+});
 
-command.push(detailsContact);
-console.log(command);
+//récupération du bouton de "commande" pour l'envoi
+let order = document.querySelector('#order');
 
-let newDetailsContact = JSON.parse(localStorage.getItem("objetContact"));
-    console.log(newDetailsContact);
+//écoute et envoie au "click" de la commande
+order.addEventListener("click", function (e) {
+    e.preventDefault();
 
+    // fetch "post"
+    fetch("http://localhost:3000/api/products/order", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ contact, products }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            window.location.href = 'confirmation.html?orderId=' + data.orderId;
+            console.log(data.orderId)
+        })
+        .catch((error) => {
+            alert('serveur injoignable' + error);
+        })
 
-
-    // création de la class contact
-    class contact {
-        constructor() {
-            this.firstNameContact = firstName;
-            this.lastNameContact = lastName;
-            this.addressContact = address;
-            this.cityContact = city;
-            this.emailContact = email;
-        }
-    };
-    let newContact = new contact;
-    console.log(newContact)
-*/
-
-// regex pour l'email ('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-z]{2,10}$')
+});
