@@ -62,7 +62,7 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         // si le panier est vide
         else {
             // création du tableau pour recevoir les objets
-            arrayOfKanaps = [];
+            arrayOfKanaps = new Array();
             // ajout du canapé sous forme d'objet dans le tableau
             arrayOfKanaps.push(newchoiceKanap);
             //création du localStorage et ajout du tableau stringifié

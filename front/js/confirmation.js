@@ -7,5 +7,8 @@ const orderId = urlparams.get('orderId');
 let orderNumberId = document.getElementById('orderId');
 orderNumberId.textContent = orderId;
 
+// message pour remercier le client
+alert('Nous vous remercions pour votre commande');
+
 // nettoyage du LocalStorage
-//localStorage.clear();
+localStorage.clear();
