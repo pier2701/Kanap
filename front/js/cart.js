@@ -237,8 +237,8 @@ let firstName = document.querySelector('#firstName');
 let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
 
 // récupération et traitement de l'input par l'opérateur ternaire
-firstName.addEventListener("input", function (e) {
-    //e.preventDefault();
+firstName.addEventListener("input", (e) => {
+    e.preventDefault();
 
     // test du champ de formulaire par regex
     let firstNameContact = e.target.value;
@@ -262,8 +262,8 @@ let lastName = document.querySelector('#lastName');
 let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
 
 // récupération et traitement de l'input par l'opérateur ternaire
-lastName.addEventListener("input", function (e) {
-    //e.preventDefault();
+lastName.addEventListener("input", (e) => {
+    e.preventDefault();
 
     // test du champ de formulaire par regex
     let lastNameContact = e.target.value;
@@ -287,8 +287,8 @@ let address = document.querySelector('#address');
 let addressErrorMsg = document.querySelector('#addressErrorMsg');
 
 // récupération et traitement de l'input par l'opérateur ternaire
-address.addEventListener("input", function (e) {
-    //e.preventDefault();
+address.addEventListener("input", (e) => {
+    e.preventDefault();
 
     // test du champ de formulaire par regex
     let addressContact = e.target.value;
@@ -314,8 +314,8 @@ let city = document.querySelector('#city');
 let cityErrorMsg = document.querySelector('#cityErrorMsg');
 
 // récupération et traitement de l'input par l'opérateur ternaire
-city.addEventListener("input", function (e) {
-    //e.preventDefault();
+city.addEventListener("input", (e) => {
+    e.preventDefault();
 
     // test du champ de formulaire par regex
     let cityContact = e.target.value;
@@ -339,8 +339,8 @@ let email = document.querySelector('#email');
 let emailErrorMsg = document.querySelector('#emailErrorMsg');
 
 // récupération et traitement de l'input par l'opérateur ternaire
-email.addEventListener("input", function (e) {
-    //e.preventDefault();
+email.addEventListener("input", (e) => {
+    e.preventDefault();
 
     // test du champ de formulaire par regex
     let emailContact = e.target.value;
@@ -355,31 +355,14 @@ email.addEventListener("input", function (e) {
     console.log(emailContact);
     // condition pour retirer le message d'erreur
     (testEmail == true) ? emailErrorMsg.innerHTML = "" : console.log("erreur formulaire");
-
     console.log(contact);
+    console.log(testEmail);
 });
 
 
-/** 
-if (contact != null) {
-    //fonction fixe les informations du "contact" dans le DOM
-    document.querySelector("firstName").value = contact.firstName;
-    document.querySelector("#lastName").value = contact.lastName;
-    document.querySelector("#address").value = contact.address;
-    document.querySelector("#city").value = contact.city;
-    document.querySelector("#email").value = contact.email;
-    console.log(contact);
-}
-else if (contact != contact) {
-    contact = contact;
-}
-else (console.log("No contact found"));
-*/
-
 //récupération du bouton de "commande" pour l'envoi
-let order = document.querySelector('#order');
-order.addEventListener("click", (event) => {
-    event.preventDefault();
+document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
+    e.preventDefault();
 
     // création d'une variable pour récupérer les "Id" de chaque produit
     let products = new Array();
@@ -403,7 +386,7 @@ order.addEventListener("click", (event) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                window.location.href = 'confirmation.html?orderId=' + data.orderId;
+                document.location.href = 'confirmation.html?orderId=' + data.orderId;
                 console.log(data.orderId);
                 console.log(contact);
             })
@@ -412,10 +395,5 @@ order.addEventListener("click", (event) => {
             });
     };
     fetchDataPost();
+    console.log("commande passsée");
 })
-
-
-
-// EMPECHER LA VALIDATION DU FORMULAIRE VIDE
-
-
