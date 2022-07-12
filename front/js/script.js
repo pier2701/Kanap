@@ -5,8 +5,7 @@ fetch('http://localhost:3000/api/products/')
             return res.json();
         } else { console.log('Erreur serveur : ' + res.status + ' serveur introuvable'); }
     })
-    // création des balises html,selon l'exemple donné
-    // association par "mot-clé/products" aux balises
+    // intégration dans le DOM de l'API
     // utilisation de la boucle forEach sur l'ensemble "products" de l'API
     .then(function (displayKanap) {
         displayKanap.forEach(products => {

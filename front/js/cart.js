@@ -1,4 +1,4 @@
-//déclaration du tableau contenant les données de la choix
+//déclaration et récupération des données du LocalStorage.
 let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
 
 // signaler un panier vide et redirection vers l'accueil
@@ -12,7 +12,7 @@ arrayOfKanaps == null ? backToMenu() : console.table(arrayOfKanaps);
 let arrayOfPrice = new Array();
 
 //--------------- function d'intégration des kanaps vers le DOM ---------//
-console.table(arrayOfKanaps)
+
 //function d'intégration des infos du tableau vers le html
 for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
@@ -28,9 +28,11 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         }
     };
 
+
     //déclaration d'une variable pour identifier chaque kanap
     let idKanap = arrayOfKanaps[kanap].id;
     console.log('Id du Kanap : ' + idKanap);
+
 
     // création des balises html et de leur attribut
     const sectionKanap = document.getElementById("cart__items");
@@ -94,6 +96,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     let idQuantity = arrayOfKanaps[kanap].quantity;
     idQuantity = inputNumberKanap.value;
 
+
     //---------------gestion de la modification de la quantité dans " input "--------------//
     inputNumberKanap.addEventListener('input', function (e) {
         idQuantity = e.target.value;
@@ -132,6 +135,9 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         console.table(arrayOfKanaps);
     });
     //---------------------fin de modification des quantités--------------------------------//
+
+
+    // mise en place des éléments de "suppression" dans le DOM
     const removeKanap = document.createElement("div");
     removeKanap.classList.add("cart__item__content__settings__delete");
     removeKanap.style.paddingTop = "12px";
@@ -171,6 +177,8 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
     });
     // ----------------------------fin de la gestion de suppression-----------------------//
+
+
     //fonction pour le calcul du prix fetché
     calculatePrice = () => {
         fetch('http://localhost:3000/api/products/' + idKanap)
@@ -182,6 +190,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
                 console.log('Erreur = ' + error);
             });
     };
+
 
     //fonction pour  calculer et intégrater le prix total du panier
     calculateTotalPrice = () => {
@@ -240,9 +249,13 @@ let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
 firstName.addEventListener("input", (e) => {
     e.preventDefault();
 
-    // test du champ de formulaire par regex
+    // récupération de la valeur de l'input dans une variable
     let firstNameContact = e.target.value;
+
+    // déclaration de la validation par regex pour le Prénom
     const regexFirstName = newTextRegex;
+
+    // test du champ de formulaire par regex
     let testFirstName = regexFirstName.test(firstNameContact);
     console.log(testFirstName);
 
@@ -265,15 +278,20 @@ let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
 lastName.addEventListener("input", (e) => {
     e.preventDefault();
 
-    // test du champ de formulaire par regex
+    // récupération de la valeur de l'input dans une variable
     let lastNameContact = e.target.value;
+
+    // déclaration de la validation par regex pour le Nom
     const regexLastName = newTextRegex;
+
+    // test du champ de formulaire par regex
     let testLastName = regexLastName.test(lastNameContact);
     console.log(testLastName);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
     (testLastName == true) ? contact.lastName = lastNameContact : lastNameErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Nom";
     console.log(lastNameContact);
+
     // condition pour retirer le message d'erreur
     (testLastName == true) ? lastNameErrorMsg.innerHTML = "" : console.log("erreur formulaire");
     console.log(contact);
@@ -290,17 +308,20 @@ let addressErrorMsg = document.querySelector('#addressErrorMsg');
 address.addEventListener("input", (e) => {
     e.preventDefault();
 
-    // test du champ de formulaire par regex
+    // récupération de la valeur de l'input dans une variable
     let addressContact = e.target.value;
 
-    // déclaration de la validation par regex pour l'Email
+    // déclaration de la validation par regex pour l'Adresse
     const regexAddress = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z0-9\s,.'-]{3,}$/);
+
+    // test du champ de formulaire par regex
     let testAddress = regexAddress.test(addressContact);
     console.log(testAddress);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
     (testAddress == true) ? contact.address = addressContact : addressErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Adresse";
     console.log(addressContact);
+
     // condition pour retirer le message d'erreur
     (testAddress == true) ? addressErrorMsg.innerHTML = "" : console.log("erreur formulaire");
     console.log(contact);
@@ -317,15 +338,20 @@ let cityErrorMsg = document.querySelector('#cityErrorMsg');
 city.addEventListener("input", (e) => {
     e.preventDefault();
 
-    // test du champ de formulaire par regex
+    // récupération de la valeur de l'input dans une variable
     let cityContact = e.target.value;
+
+    // déclaration de la validation par regex pour la Ville correspondant aussi au Nom et Prénom
     const regexCity = newTextRegex;
+
+    // test du champ de formulaire par regex
     let testCity = regexCity.test(cityContact);
     console.log(testCity);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
     (testCity == true) ? contact.city = cityContact : cityErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Ville";
     console.log(cityContact);
+
     // condition pour retirer le message d'erreur
     (testCity == true) ? cityErrorMsg.innerHTML = "" : console.log("erreur formulaire");
     console.log(contact);
@@ -342,25 +368,27 @@ let emailErrorMsg = document.querySelector('#emailErrorMsg');
 email.addEventListener("input", (e) => {
     e.preventDefault();
 
-    // test du champ de formulaire par regex
+    // récupération de la valeur de l'input dans une variable
     let emailContact = e.target.value;
 
     // déclaration de la validation par regex pour l'Email
     const regexEmail = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/);
+
+    // test du champ de formulaire par regex
     let testEmail = regexEmail.test(emailContact);
     console.log(testEmail);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
     (testEmail == true) ? contact.email = emailContact : emailErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Email";
     console.log(emailContact);
+
     // condition pour retirer le message d'erreur
     (testEmail == true) ? emailErrorMsg.innerHTML = "" : console.log("erreur formulaire");
     console.log(contact);
-    console.log(testEmail);
 });
 
 
-//récupération du bouton de "commande" pour l'envoi
+//récupération du bouton de "commande" pour l'envoi de la commande
 document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
     e.preventDefault();
 

@@ -27,7 +27,7 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
             window.location.href = "index.html";
         };
     };
-    //utilisation de la class sous forme de variable pour récupération des données au click 
+    //utilisation de la class pour déclarer une nouvelle variable pour récupérer les données au click 
     let newchoiceKanap = new choiceKanap;
 
     // conditions de sélection par contraintes pour passer la commande
@@ -63,8 +63,10 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         else {
             // création du tableau pour recevoir les objets
             arrayOfKanaps = new Array();
+
             // ajout du canapé sous forme d'objet dans le tableau
             arrayOfKanaps.push(newchoiceKanap);
+
             //création du localStorage et ajout du tableau stringifié
             localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
             console.log("premier choix: " + arrayOfKanaps[0].quantity);

@@ -14,8 +14,8 @@ async function getKanap(idKanap) {
         .then(function (data) {
             kanap = data;
         })
-        .catch(function (err) {
-            console.log('Erreur : serveur introuvable ' + err);
+        .catch(function (error) {
+            console.log('Erreur : serveur introuvable ' + error);
         });
     return kanap;
 };
