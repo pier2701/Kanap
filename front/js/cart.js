@@ -245,7 +245,7 @@ const newTextRegex = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõ
 let firstName = document.querySelector('#firstName');
 let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
 
-// récupération et traitement de l'input par l'opérateur ternaire
+// récupération et traitement de l'input par l'écoute de la variable ciblée
 firstName.addEventListener("input", (e) => {
     e.preventDefault();
 
@@ -274,7 +274,7 @@ firstName.addEventListener("input", (e) => {
 let lastName = document.querySelector('#lastName');
 let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
 
-// récupération et traitement de l'input par l'opérateur ternaire
+// récupération et traitement de l'input par l'écoute de la variable ciblée
 lastName.addEventListener("input", (e) => {
     e.preventDefault();
 
@@ -304,7 +304,7 @@ lastName.addEventListener("input", (e) => {
 let address = document.querySelector('#address');
 let addressErrorMsg = document.querySelector('#addressErrorMsg');
 
-// récupération et traitement de l'input par l'opérateur ternaire
+// récupération et traitement de l'input par l'écoute de la variable ciblée
 address.addEventListener("input", (e) => {
     e.preventDefault();
 
@@ -334,7 +334,7 @@ address.addEventListener("input", (e) => {
 let city = document.querySelector('#city');
 let cityErrorMsg = document.querySelector('#cityErrorMsg');
 
-// récupération et traitement de l'input par l'opérateur ternaire
+// récupération et traitement de l'input par l'écoute de la variable ciblée
 city.addEventListener("input", (e) => {
     e.preventDefault();
 
@@ -364,7 +364,7 @@ city.addEventListener("input", (e) => {
 let email = document.querySelector('#email');
 let emailErrorMsg = document.querySelector('#emailErrorMsg');
 
-// récupération et traitement de l'input par l'opérateur ternaire
+// récupération et traitement de l'input par l'écoute de la variable ciblée
 email.addEventListener("input", (e) => {
     e.preventDefault();
 
@@ -388,7 +388,7 @@ email.addEventListener("input", (e) => {
 });
 
 
-//récupération du bouton de "commande" pour l'envoi de la commande
+//récupération du formulaire de commande "form" et soumission "submit" du bouton de "commande" pour l'envoi
 document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
     e.preventDefault();
 
