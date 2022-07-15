@@ -31,13 +31,13 @@ async function displayKanap(idKanap) {
     imageKanap.alt = KANAP.altTxt;
 
     const titleKanap = document.getElementById("title");
-    titleKanap.innerHTML = KANAP.name;
+    titleKanap.textContent = KANAP.name;
 
     const priceKanap = document.getElementById("price");
-    priceKanap.innerHTML = KANAP.price;
+    priceKanap.textContent = KANAP.price;
 
     const descriptionKanap = document.getElementById("description");
-    descriptionKanap.innerHTML = KANAP.description;
+    descriptionKanap.textContent = KANAP.description;
 
     //boucle "for" qui intégrera chaque couleur présente dans le tableau fourni par l'API + Id
     for (color of KANAP.colors) {

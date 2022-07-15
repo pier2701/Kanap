@@ -5,7 +5,9 @@ fetch('http://localhost:3000/api/products/')
             return res.json();
         } else { console.log('Erreur serveur : ' + res.status + ' serveur introuvable'); }
     })
-    // intégration dans le DOM de l'API
+    //---------------intégration dans le DOM de l'API----------------//
+
+
     // utilisation de la boucle forEach sur l'ensemble "products" de l'API
     .then(function (displayKanap) {
         displayKanap.forEach(products => {
@@ -25,18 +27,18 @@ fetch('http://localhost:3000/api/products/')
 
             let titleProduct = document.createElement("h3");
             titleProduct.classList.add("productName");
-            titleProduct.innerHTML = products.name;
+            titleProduct.textContent = products.name;
             kanapBlock.appendChild(titleProduct);
 
             let descriptionProduct = document.createElement("p");
             descriptionProduct.classList.add("productDescription");
-            descriptionProduct.innerHTML = products.description;
+            descriptionProduct.textContent = products.description;
             kanapBlock.appendChild(descriptionProduct);
 
             // rajout de l'élément "prix" et de sa mise en page
             let priceProduct = document.createElement("span");
             priceProduct.classList.add("price");
-            priceProduct.innerHTML = products.price + " €";
+            priceProduct.textContent = products.price + " €";
             priceProduct.style.paddingBottom = "10px";
             kanapBlock.appendChild(priceProduct);
         });

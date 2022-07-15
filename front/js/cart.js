@@ -61,12 +61,12 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     contentKanap.appendChild(contentDetailsKanap);
 
     const titleKanap = document.createElement("h2");
-    titleKanap.innerHTML = arrayOfKanaps[kanap].name;
+    titleKanap.textContent = arrayOfKanaps[kanap].name;
     contentDetailsKanap.appendChild(titleKanap);
     let idName = arrayOfKanaps[kanap].name;
 
     const colorKanap = document.createElement("p");
-    colorKanap.innerHTML = arrayOfKanaps[kanap].color;
+    colorKanap.textContent = arrayOfKanaps[kanap].color;
     contentDetailsKanap.appendChild(colorKanap);
     let idColor = arrayOfKanaps[kanap].color;
 
@@ -83,7 +83,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
     const selectNewQuantityKanap = document.createElement("p");
     adjustQuantityKanap.appendChild(selectNewQuantityKanap);
-    selectNewQuantityKanap.innerHTML = "Quantité : ";
+    selectNewQuantityKanap.textContent = "Quantité : ";
 
     const inputNumberKanap = document.createElement("input");
     inputNumberKanap.classList.add("itemQuantity");
@@ -146,7 +146,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     const deleteKanap = document.createElement("p");
     deleteKanap.classList.add("deleteItem");
     removeKanap.appendChild(deleteKanap);
-    deleteKanap.innerHTML = "Supprimer";
+    deleteKanap.textContent = "Supprimer";
 
     // calcul de la quantité total avec la méthode "reduce"
     let totalQuantity = document.querySelector("#totalQuantity");
@@ -184,7 +184,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         fetch('http://localhost:3000/api/products/' + idKanap)
             .then((resp) => resp.json())
             .then(function (kanaps) {
-                priceKanap.innerHTML = "Prix total : " + kanaps.price * idQuantity + "  €";
+                priceKanap.textContent = "Prix total : " + kanaps.price * idQuantity + "  €";
             })
             .catch(function (error) {
                 console.log('Erreur = ' + error);
@@ -201,7 +201,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
                 arrayOfPrice.push(totalPriceKanap);
                 let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
                 let totalPrice = document.getElementById('totalPrice');
-                totalPrice.innerHTML = sumOfPrice;
+                totalPrice.textContent = sumOfPrice;
             })
             .catch(function (error) {
                 console.log('Erreur = ' + error);
@@ -211,7 +211,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     //fonction pour le calcul total des quantités avec la méthode "reduce"
     function sumQuantity(totalQuantity) {
         let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
-        totalQuantity.innerHTML = resultQuantity;
+        totalQuantity.textContent = resultQuantity;
     };
 
     //prix global du panier
@@ -238,6 +238,11 @@ let contact = {
 // déclaration de la validation par regex pour le Nom, le Prénom et la Ville
 const newTextRegex = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z\s-]{1,31}$/);
 
+// déclaration de la validation par regex pour l'Adresse
+const newAddressRegex = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z0-9\s,.'-]{3,}$/);
+
+// déclaration de la validation par regex pour l'Email
+const newEmailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
 
 
 //----- gestion du Prénom-----//
@@ -312,7 +317,7 @@ address.addEventListener("input", (e) => {
     let addressContact = e.target.value;
 
     // déclaration de la validation par regex pour l'Adresse
-    const regexAddress = new RegExp(/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-Z0-9\s,.'-]{3,}$/);
+    const regexAddress = newAddressRegex;
 
     // test du champ de formulaire par regex
     let testAddress = regexAddress.test(addressContact);
@@ -372,7 +377,7 @@ email.addEventListener("input", (e) => {
     let emailContact = e.target.value;
 
     // déclaration de la validation par regex pour l'Email
-    const regexEmail = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/);
+    const regexEmail = newEmailRegex;
 
     // test du champ de formulaire par regex
     let testEmail = regexEmail.test(emailContact);
@@ -399,6 +404,19 @@ document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
         console.log(products);
     });
 
+    // conditions définitives pour valider le formulaire avant la requête "post"
+    if (
+        newTextRegex.test(contact.city) == true &&
+        newTextRegex.test(contact.firstName) == true &&
+        newTextRegex.test(contact.lastName) == true &&
+        newAddressRegex.test(contact.address) == true &&
+        newEmailRegex.test(contact.email) == true
+    ) {
+        fetchDataPost();
+    } else {
+        alert("Vous n'avez pas correctement renseigner le formulaire")
+    }
+
     // fonction fetch avec une requête "post" pour soumettre la commande
     fetchDataPost = async () => {
         await fetch("http://localhost:3000/api/products/order", {
@@ -422,6 +440,4 @@ document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
                 alert('serveur injoignable' + error);
             });
     };
-    fetchDataPost();
-    console.log("commande passsée");
 })
