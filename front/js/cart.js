@@ -265,10 +265,10 @@ firstName.addEventListener("input", (e) => {
     console.log(testFirstName);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
-    (testFirstName == true) ? contact.firstName = firstNameContact : firstNameErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Prénom";
+    (testFirstName == true) ? contact.firstName = firstNameContact : firstNameErrorMsg.textContent = "Vous n'avez pas renseigné correctement votre Prénom";
     console.log(firstNameContact);
     // condition pour retirer le message d'erreur
-    (testFirstName == true) ? firstNameErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+    (testFirstName == true) ? firstNameErrorMsg.textContent = "" : console.log("erreur formulaire");
     console.log(contact);
 });
 
@@ -294,11 +294,11 @@ lastName.addEventListener("input", (e) => {
     console.log(testLastName);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
-    (testLastName == true) ? contact.lastName = lastNameContact : lastNameErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Nom";
+    (testLastName == true) ? contact.lastName = lastNameContact : lastNameErrorMsg.textContent = "Vous n'avez pas renseigné correctement votre Nom";
     console.log(lastNameContact);
 
     // condition pour retirer le message d'erreur
-    (testLastName == true) ? lastNameErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+    (testLastName == true) ? lastNameErrorMsg.textContent = "" : console.log("erreur formulaire");
     console.log(contact);
 });
 
@@ -324,11 +324,11 @@ address.addEventListener("input", (e) => {
     console.log(testAddress);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
-    (testAddress == true) ? contact.address = addressContact : addressErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Adresse";
+    (testAddress == true) ? contact.address = addressContact : addressErrorMsg.textContent = "Vous n'avez pas renseigné correctement votre Adresse";
     console.log(addressContact);
 
     // condition pour retirer le message d'erreur
-    (testAddress == true) ? addressErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+    (testAddress == true) ? addressErrorMsg.textContent = "" : console.log("erreur formulaire");
     console.log(contact);
 });
 
@@ -354,11 +354,11 @@ city.addEventListener("input", (e) => {
     console.log(testCity);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
-    (testCity == true) ? contact.city = cityContact : cityErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Ville";
+    (testCity == true) ? contact.city = cityContact : cityErrorMsg.textContent = "Vous n'avez pas renseigné correctement votre Ville";
     console.log(cityContact);
 
     // condition pour retirer le message d'erreur
-    (testCity == true) ? cityErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+    (testCity == true) ? cityErrorMsg.textContent = "" : console.log("erreur formulaire");
     console.log(contact);
 });
 
@@ -384,11 +384,11 @@ email.addEventListener("input", (e) => {
     console.log(testEmail);
 
     // intégration de l'information dans l'objet "contact" par l'opérateur ternaire
-    (testEmail == true) ? contact.email = emailContact : emailErrorMsg.innerHTML = "Vous n'avez pas renseigné correctement votre Email";
+    (testEmail == true) ? contact.email = emailContact : emailErrorMsg.textContent = "Vous n'avez pas renseigné correctement votre Email";
     console.log(emailContact);
 
     // condition pour retirer le message d'erreur
-    (testEmail == true) ? emailErrorMsg.innerHTML = "" : console.log("erreur formulaire");
+    (testEmail == true) ? emailErrorMsg.textContent = "" : console.log("erreur formulaire");
     console.log(contact);
 });
 
