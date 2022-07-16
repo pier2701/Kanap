@@ -192,7 +192,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     };
 
 
-    //fonction pour  calculer et intégrater le prix total du panier
+    //fonction pour calculer et intégrater le prix total du panier
     calculateTotalPrice = () => {
         fetch('http://localhost:3000/api/products/' + idKanap)
             .then((resp) => resp.json())
@@ -217,7 +217,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     //prix global du panier
     calculateTotalPrice();
 
-    //prix calculé en arrivant sur la page
+    //prix calculé par model en arrivant sur la page
     calculatePrice();
 }
 
@@ -412,32 +412,32 @@ document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
         newAddressRegex.test(contact.address) == true &&
         newEmailRegex.test(contact.email) == true
     ) {
+
+        // fonction fetch avec une requête "post" pour soumettre la commande
+        fetchDataPost = async () => {
+            await fetch("http://localhost:3000/api/products/order", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    contact,
+                    products
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    document.location.href = 'confirmation.html?orderId=' + data.orderId;
+                    console.log(data.orderId);
+                    console.log(contact);
+                })
+                .catch((error) => {
+                    alert('serveur injoignable' + error);
+                });
+        };
         fetchDataPost();
     } else {
         alert("Vous n'avez pas correctement renseigner le formulaire")
     }
-
-    // fonction fetch avec une requête "post" pour soumettre la commande
-    fetchDataPost = async () => {
-        await fetch("http://localhost:3000/api/products/order", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                contact,
-                products
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                document.location.href = 'confirmation.html?orderId=' + data.orderId;
-                console.log(data.orderId);
-                console.log(contact);
-            })
-            .catch((error) => {
-                alert('serveur injoignable' + error);
-            });
-    };
 })

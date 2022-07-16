@@ -42,4 +42,7 @@ fetch('http://localhost:3000/api/products/')
             priceProduct.style.paddingBottom = "10px";
             kanapBlock.appendChild(priceProduct);
         });
+    })
+    .catch(function (error) {
+        console.log('Erreur : serveur introuvable ' + error);
     });

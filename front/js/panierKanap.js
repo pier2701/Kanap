@@ -10,8 +10,10 @@ class choiceKanap {
     }
 };
 
-//création et préparation du futur tableau
+//création du tableau qui contiendra les "objet-kanap" 
+// et récupération des "objet/kanap" existant du LocalStorage si le panier n'est pas vide
 let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
+console.log(arrayOfKanaps)
 
 //récupération de la sélection au click
 const addToCart = document.querySelector("#addToCart").addEventListener("click", async function (event) {
@@ -22,7 +24,8 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         if (window.confirm('Votre produit a bien été ajouté, cliquez sur "OK" pour finaliser votre commade ou "Annuler" pour continuer vos achats.')) {
             //redirection vers la page "panier"
             window.location.href = "cart.html";
-        } else {
+        }
+        else {
             //redirection vers la page "index" pour ajouter un autre choix
             window.location.href = "index.html";
         };
@@ -39,6 +42,7 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
     else {
         //si le panier n'est pas vide et qu'il est inférieur ou égal à 100
         if (arrayOfKanaps != null && arrayOfKanaps.length <= 100) {
+
             //création d'une constante pour regrouper les canapés avec le même id et couleur
             const comparekanap = arrayOfKanaps.find(
                 kanap => kanap.id === newchoiceKanap.id

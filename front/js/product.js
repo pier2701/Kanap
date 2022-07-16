@@ -1,5 +1,5 @@
-//recherche et récupération de l'Id  dans  l'URL actuelle, définie par "herf
-let searchAndGetKanap = new URL(location.href);
+//recherche et récupération de l'Id  dans  l'URL actuelle
+let searchAndGetKanap = new URL(window.location.href);
 let idKanap = searchAndGetKanap.searchParams.get("id");
 console.log('Id du Kanap = ' + searchAndGetKanap.searchParams.get("id"));
 
