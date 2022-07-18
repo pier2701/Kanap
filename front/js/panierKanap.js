@@ -15,9 +15,13 @@ class choiceKanap {
 let arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
 console.log(arrayOfKanaps)
 
+
 //récupération de la sélection au click
 const addToCart = document.querySelector("#addToCart").addEventListener("click", async function (event) {
     event.preventDefault();
+
+    //utilisation de la class pour déclarer une nouvelle variable pour récupérer les données au click 
+    let newchoiceKanap = new choiceKanap;
 
     // fonction pour finaliser la commande ou revenir aux choix de canapés
     const allerAuPanier = () => {
@@ -30,8 +34,6 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
             window.location.href = "index.html";
         };
     };
-    //utilisation de la class pour déclarer une nouvelle variable pour récupérer les données au click 
-    let newchoiceKanap = new choiceKanap;
 
     // conditions de sélection par contraintes pour passer la commande
     if (newchoiceKanap.quantity == 0) {
@@ -80,5 +82,20 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
         console.log(newchoiceKanap);
     }
+    //fonction pour le calcul total des quantités présentes dans le LocalStorage avec la méthode "reduce"
+    sumQuantity = () => {
+        let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
+        console.log(resultQuantity);
+
+        if (resultQuantity > 100) {
+            alert("Vous avez atteint la limite maximale de produit pour votre panier");
+        } else {
+            console.log("il reste de la place")
+        }
+    };
+    sumQuantity();
 });
 console.table(arrayOfKanaps);
+
+
+
