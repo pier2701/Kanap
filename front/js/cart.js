@@ -213,12 +213,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     function sumQuantity(totalQuantity) {
         let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
         totalQuantity.textContent = resultQuantity;
-        // si le panier dépasse les 100 articles
-        if (resultQuantity > 100) {
-            alert("Veuillez réajuster et respecter la quantité maximale de 100 articles")
-        } else {
-            console.log("il reste de la place dans le panier")
-        }
     };
 
     //prix global du panier
@@ -436,7 +430,7 @@ document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    //document.location.href = 'confirmation.html?orderId=' + data.orderId;
+                    document.location.href = 'confirmation.html?orderId=' + data.orderId;
                     console.log(data.orderId);
                     console.log(contact);
                 })

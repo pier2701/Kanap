@@ -82,20 +82,5 @@ const addToCart = document.querySelector("#addToCart").addEventListener("click",
         arrayOfKanaps = JSON.parse(localStorage.getItem("panierkanap"));
         console.log(newchoiceKanap);
     }
-    //fonction pour le calcul total des quantités présentes dans le LocalStorage avec la méthode "reduce"
-    sumQuantity = () => {
-        let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
-        console.log(resultQuantity);
-
-        if (resultQuantity > 100) {
-            alert("Vous avez atteint la limite maximale de produit pour votre panier");
-        } else {
-            console.log("il reste de la place")
-        }
-    };
-    sumQuantity();
 });
 console.table(arrayOfKanaps);
-
-
-
