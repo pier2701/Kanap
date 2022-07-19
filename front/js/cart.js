@@ -99,10 +99,13 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
 
 
     //---------------gestion de la modification de la quantité dans " input "--------------//
+
     inputNumberKanap.addEventListener('input', function (e) {
+
         idQuantity = e.target.value;
         let newChoiceKanap = new choiceKanap;
 
+        //console.log(newChoiceKanap.price);
         //création d'une constante pour regrouper les canapés avec le même id et couleur
         const comparekanap = arrayOfKanaps.find(
             (kanap) => kanap.idKanap === newChoiceKanap.idKanap
@@ -116,25 +119,52 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
                 // fonction inversé avec les 2 conditions pour supprimer l'ancien kanap
                 (element) => !(element.id === idKanap && element.color === idColor));
 
-            // mise à jour dynamique du prix
-            calculatePrice();
-
             //mise à jour du tableau avec le nouveau kanap
             arrayOfKanaps.push(newChoiceKanap);
 
             // mise à jour du localStorage
             localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
             console.log("kanaps identiques");
-
-            // rechargement de la page et mise à jour du DOM en fonction du localStorage
-            location.reload();
-            alert("La quantité et le prix de votre produit vont être  modifiées");
         };
 
         //mise en place de l'opérateur ternaire puis de la fonction pour modification
         comparekanap ? exchangeQuantity() : console.log("kanaps différents");
         console.table(arrayOfKanaps);
+
+        // mise à jour dynamique de la quantité totale
+        sumQuantity(totalQuantity);
+
+        // mise à jour dynamique du prix
+        adjustPrice = () => {
+            fetch('http://localhost:3000/api/products/' + idKanap)
+                .then((resp) => resp.json())
+                .then(function (kanaps) {
+                    priceKanap.textContent = "Prix total : " + kanaps.price * newChoiceKanap.quantity + "  €";
+                    console.log(newChoiceKanap.quantity);
+                })
+                .catch(function (error) {
+                    console.log('Erreur = ' + error);
+                });
+        };
+        adjustPrice();
+
+        // mise à jour dynamique du prix global en fonction de la modification de quantité
+        adjustTotalPrice = () => {
+            fetch('http://localhost:3000/api/products/' + idKanap)
+                .then((resp) => resp.json())
+                .then(function (kanaps) {
+                    let totalPriceKanap = kanaps.price * newChoiceKanap.quantity;
+                    let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
+                    let totalPrice = document.getElementById('totalPrice');
+                    totalPrice.textContent = sumOfPrice + (totalPriceKanap - kanaps.price);
+                })
+                .catch(function (error) {
+                    console.log('Erreur = ' + error);
+                });
+        };
+        adjustTotalPrice();
     });
+
     //---------------------fin de modification des quantités--------------------------------//
 
 
@@ -208,6 +238,7 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
                 console.log('Erreur = ' + error);
             });
     };
+
 
     //fonction pour le calcul total des quantités avec la méthode "reduce"
     function sumQuantity(totalQuantity) {
