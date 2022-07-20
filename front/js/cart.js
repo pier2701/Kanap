@@ -96,75 +96,77 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
     adjustQuantityKanap.appendChild(inputNumberKanap);
     let idQuantity = arrayOfKanaps[kanap].quantity;
     idQuantity = inputNumberKanap.value;
-
+    console.log(idQuantity);
 
     //---------------gestion de la modification de la quantité dans " input "--------------//
 
     inputNumberKanap.addEventListener('input', function (e) {
 
         idQuantity = e.target.value;
-        let newChoiceKanap = new choiceKanap;
 
-        //console.log(newChoiceKanap.price);
-        //création d'une constante pour regrouper les canapés avec le même id et couleur
-        const comparekanap = arrayOfKanaps.find(
-            (kanap) => kanap.idKanap === newChoiceKanap.idKanap
-                &&
-                kanap.color === newChoiceKanap.color
-        );
+        // fonction en cas de quantité nulle lors de la modification
+        zeroQuantity = () => {
+            alert("vous ne pouvez pas saisir de valeur nulle");
+            location.reload();
+        }
 
-        //création de la fonction pour remplacer et mettre à jour les objets du tableau 
-        exchangeQuantity = () => {
-            arrayOfKanaps = arrayOfKanaps.filter(
-                // fonction inversé avec les 2 conditions pour supprimer l'ancien kanap
-                (element) => !(element.id === idKanap && element.color === idColor));
+        // condition ternaire pour éviter de sélectionner une valeur nulle
+        if (idQuantity == 0) {
+            zeroQuantity()
+        } else {
 
-            //mise à jour du tableau avec le nouveau kanap
-            arrayOfKanaps.push(newChoiceKanap);
+            let newChoiceKanap = new choiceKanap;
 
-            // mise à jour du localStorage
-            localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
-            console.log("kanaps identiques");
-        };
+            //création d'une constante pour regrouper les canapés avec le même id et couleur
+            const comparekanap = arrayOfKanaps.find(
+                (kanap) => kanap.idKanap === newChoiceKanap.idKanap
+                    &&
+                    kanap.color === newChoiceKanap.color
+            );
 
-        //mise en place de l'opérateur ternaire puis de la fonction pour modification
-        comparekanap ? exchangeQuantity() : console.log("kanaps différents");
-        console.table(arrayOfKanaps);
+            //création de la fonction pour remplacer et mettre à jour les objets du tableau 
+            exchangeQuantity = () => {
+                arrayOfKanaps = arrayOfKanaps.filter(
+                    // fonction inversé avec les 2 conditions pour supprimer l'ancien kanap
+                    (element) => !(element.id === idKanap && element.color === idColor));
 
-        // mise à jour dynamique de la quantité totale
-        sumQuantity(totalQuantity);
+                //mise à jour du tableau avec le nouveau kanap
+                arrayOfKanaps.push(newChoiceKanap);
 
-        // mise à jour dynamique du prix
-        adjustPrice = () => {
-            fetch('http://localhost:3000/api/products/' + idKanap)
-                .then((resp) => resp.json())
-                .then(function (kanaps) {
-                    priceKanap.textContent = "Prix total : " + kanaps.price * newChoiceKanap.quantity + "  €";
-                    console.log(newChoiceKanap.quantity);
-                })
-                .catch(function (error) {
-                    console.log('Erreur = ' + error);
-                });
-        };
-        adjustPrice();
+                // mise à jour du localStorage
+                localStorage.setItem("panierkanap", JSON.stringify(arrayOfKanaps));
+                console.log("kanaps identiques");
+            };
 
-        // mise à jour dynamique du prix global en fonction de la modification de quantité
-        adjustTotalPrice = () => {
-            fetch('http://localhost:3000/api/products/' + idKanap)
-                .then((resp) => resp.json())
-                .then(function (kanaps) {
-                    let totalPriceKanap = kanaps.price * newChoiceKanap.quantity;
-                    let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
-                    let totalPrice = document.getElementById('totalPrice');
-                    totalPrice.textContent = sumOfPrice + (totalPriceKanap - kanaps.price);
-                })
-                .catch(function (error) {
-                    console.log('Erreur = ' + error);
-                });
-        };
-        adjustTotalPrice();
+            //mise en place de l'opérateur ternaire puis de la fonction pour modification
+            comparekanap ? exchangeQuantity() : console.log("kanaps différents");
+            console.table(arrayOfKanaps);
+
+            // mise à jour dynamique de la quantité totale
+            sumQuantity(totalQuantity);
+
+            // mise à jour dynamique du prix
+            adjustPrice = () => {
+                fetch('http://localhost:3000/api/products/' + idKanap)
+                    .then((resp) => resp.json())
+                    .then(function (kanaps) {
+                        // mise à jour dynamique du prix total par kanap en fonction de la quantité
+                        priceKanap.textContent = "Prix total : " + kanaps.price * newChoiceKanap.quantity + "  €";
+                        console.log(newChoiceKanap.quantity);
+
+                        // mise à jour dynamique du prix global en fonction de la quantité
+                        let totalPriceKanap = kanaps.price * newChoiceKanap.quantity;
+                        let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
+                        let totalPrice = document.getElementById('totalPrice');
+                        totalPrice.textContent = sumOfPrice + (totalPriceKanap - kanaps.price);
+                    })
+                    .catch(function (error) {
+                        console.log('Erreur = ' + error);
+                    });
+            };
+            adjustPrice();
+        }
     });
-
     //---------------------fin de modification des quantités--------------------------------//
 
 
@@ -205,7 +207,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
             localStorage.clear();
             document.location.href = "index.html";
         }
-
     });
     // ----------------------------fin de la gestion de suppression-----------------------//
 
@@ -215,19 +216,10 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         fetch('http://localhost:3000/api/products/' + idKanap)
             .then((resp) => resp.json())
             .then(function (kanaps) {
+                // calcul du prix total pour chaque kanap
                 priceKanap.textContent = "Prix total : " + kanaps.price * idQuantity + "  €";
-            })
-            .catch(function (error) {
-                console.log('Erreur = ' + error);
-            });
-    };
 
-
-    //fonction pour calculer et intégrater le prix total du panier
-    calculateTotalPrice = () => {
-        fetch('http://localhost:3000/api/products/' + idKanap)
-            .then((resp) => resp.json())
-            .then(function (kanaps) {
+                // calcul et intégration du prix global du panier
                 let totalPriceKanap = kanaps.price * idQuantity;
                 arrayOfPrice.push(totalPriceKanap);
                 let sumOfPrice = arrayOfPrice.reduce((a, b) => a + b, 0);
@@ -245,9 +237,6 @@ for (kanap = 0; kanap < arrayOfKanaps.length; kanap++) {
         let resultQuantity = arrayOfKanaps.reduce(function (a, b) { return parseInt(a) + parseInt(b.quantity); }, 0);
         totalQuantity.textContent = resultQuantity;
     };
-
-    //prix global du panier
-    calculateTotalPrice();
 
     //prix calculé par model en arrivant sur la page
     calculatePrice();
@@ -473,7 +462,4 @@ document.querySelector(".cart__order__form").addEventListener("submit", (e) => {
     } else {
         alert("Vous n'avez pas correctement renseigner le formulaire")
     }
-})
-
-
-
+});
